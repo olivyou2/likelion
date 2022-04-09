@@ -1,0 +1,24 @@
+<html>
+    <body>
+        <div class="star">
+
+        </div>
+        <script>
+            let starTag = "";
+
+            const star = document.querySelector(".star");
+            const size = 5;
+
+            for (let i=1; i<=size; i++){
+                for (let j=0; j<i; j++){
+                    starTag += "*";    
+                }
+                starTag += "<br/>"
+            }
+
+            star.innerHTML = starTag;
+
+            
+        </script>
+    </body>
+</html>
