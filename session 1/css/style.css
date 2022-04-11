@@ -1,0 +1,164 @@
+body.darktheme {
+    background-color: black;
+}
+
+hr.darktheme {
+    color: white;
+}
+
+.content {
+    width: 100%;
+    height: 100%;
+    padding: 30px;
+}
+
+.content.darktheme {
+    color: white;
+}
+
+.contentHeader {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: coral;
+}
+
+.contentHeader.darktheme {
+    background-color: white;
+    color: black;
+}
+
+.contentTitle {
+    color: white;
+    font-size: 5em;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-style: italic;
+    font-weight: 900;
+}
+
+.contentTitle.darktheme {
+    background-color: white;
+    color: black;
+}
+
+.contentSubtitle {
+    color: white;
+    font-size: 2em;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 500;
+}
+
+.contentSubtitle.darktheme {
+    background-color: white;
+    color: black;
+}
+
+.description {
+    color: black;
+    font-size: 1em;
+    font-style: italic;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 500;
+}
+
+.description.darktheme {
+    color: white;
+}
+
+.contentPictures {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.contentPictures .pictureWrapper {
+    flex: 1;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.contentPictures>.pictureWrapper>.picture {
+    width: 300px;
+    height: 300px;
+    border-radius: 50px;
+    object-fit: cover;
+    -webkit-box-shadow: 5px 5px 36px -1px rgba(0, 0, 0, 0.34);
+    box-shadow: 5px 5px 36px -1px rgba(0, 0, 0, 0.34);
+    margin-bottom: 20px;
+}
+
+.contentPictures>.pictureWrapper>.picture.darktheme {
+    width: 300px;
+    height: 300px;
+    border-radius: 30px;
+    object-fit: cover;
+    -webkit-box-shadow: 5px 5px 36px -1px rgba(255, 255, 255, 0.34);
+    box-shadow: 5px 5px 36px -1px rgba(255, 255, 255, 0.34);
+    margin-bottom: 20px;
+}
+
+.contentPictures .pictureWrapper .picture:hover {
+    width: 300px;
+    height: 300px;
+    border-radius: 30px;
+    object-fit: cover;
+    transition: 0.1s ease;
+    filter: opacity(0.5) drop-shadow(0 0 0 black);
+}
+
+.contentPictures .pictureWrapper {
+    color: black;
+    font-size: 2em;
+    font-style: italic;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 500;
+}
+
+.contentDescription {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.contentDescription .image {
+    -webkit-box-shadow: 5px 5px 36px -1px rgba(0, 0, 0, 0.34);
+    box-shadow: 5px 5px 36px -1px rgba(0, 0, 0, 0.34);
+}
+
+.contentDescription .content {
+    font-size: 2em;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 300;
+}
+
+.interactionWrapper {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.interactionWrapper .buttonMe {
+    background-color: white;
+    border: solid gray;
+    border-radius: 10px;
+    width: 200px;
+    height: 50px;
+}
+
+.interactionWrapper .buttonGamePlay {
+    background-color: white;
+    border: solid gray;
+    border-radius: 10px;
+    width: 200px;
+    height: 50px;
+}

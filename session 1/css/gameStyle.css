@@ -1,0 +1,8 @@
+.gameObject {
+    position: absolute;
+    background-color: black;
+}
+
+.gameObject.darktheme {
+    background-color: white;
+}
