@@ -78,6 +78,7 @@
 
         const gameSystemDictionary = {
             objects: [],
+            uis: [],
             viewport: {
                 x: 0,
                 y: 0,
@@ -87,12 +88,44 @@
             }
         };
 
+        const getRandId = () => {
+            let randid = "";
+
+            for (let i = 0; i < 4; i++) {
+                randid += Math.floor(Math.random() * Math.pow(16, 4)).toString("16");
+                if (i < 3) {
+                    //randid += "-";
+                }
+            };
+            return randid;
+        };
+
         const getObjects = () => {
             return gameSystemDictionary.objects;
         };
 
-        const getObjectConstructor = (elem) => {
+        const getUIs = () => {
+            return gameSystemDictionary.uis;
+        }
+
+        const getUIConstructor = () => {
             return {
+                x: useState(0),
+                y: useState(0),
+                width: useState(0),
+                height: useState(0),
+                color: useState("black"),
+                text: useState(undefined),
+                id: getRandId(),
+                elem: undefined,
+
+                onClick: undefined,
+                onLoad: undefined
+            }
+        };
+
+        const getObjectConstructor = (elem) => {
+            let obj = {
                 elem,
                 x: 0,
                 y: 0,
@@ -111,11 +144,42 @@
                 keyDown: undefined,
                 keyPress: undefined,
                 step: undefined,
+                beforeStep: undefined,
+
+                getViewX: () => {
+                    let view = getViewPort();
+                    return obj.x - view.x;
+                },
+
+                getViewY: () => {
+                    let view = getViewPort();
+                    return obj.y - view.y;
+                }
+            };
+            return obj;
+        };
+
+        const useState = (initial) => {
+            // Change state via setState or reference this.state
+            let obj = { prevState: initial, state: initial, setState: (state) => { console.log(`${state}`); obj.state = state } };
+            return obj;
+        };
+
+        const checkStateChanged = (state) => {
+            if (state.state === state.prevState) {
+                return false;
+            } else {
+                state.prevState = state.state;
+                return true;
             }
         };
 
         const getGameElem = () => {
             return document.querySelector(".gamePlay");
+        }
+
+        const getUIElem = () => {
+            return document.querySelector(".ui");
         }
 
         const objectRender = (obj) => {
@@ -133,6 +197,47 @@
             elem.style.transform = transform;
             elem.style.width = `${obj.width}`;
             elem.style.height = `${obj.height}`;
+        };
+
+        const uiRender = (uiObj) => {
+            const { x, y, width, height, color, text, onClick, id, onLoad } = uiObj;
+
+            const uiElem = getUIElem();
+
+            if (uiElem.querySelector(`#uiObj${id}`) === null) {
+                const elem = document.createElement("div");
+                elem.classList.add("uiObject");
+                elem.id = `uiObj${id}`;
+                uiObj.elem = elem;
+
+                uiElem.append(elem);
+                if (onLoad) {
+                    onLoad(elem);
+                }
+            }
+
+            const uiObject = uiElem.querySelector(`#uiObj${id}`);
+
+            if (checkStateChanged(x) || checkStateChanged(y)) {
+                const transform = `translate(${x.state}px, ${y.state}px)`;
+                uiObject.style.transform = transform;
+            }
+
+            if (checkStateChanged(color)) {
+                uiObject.style.backgroundColor = color.state;
+            }
+
+            if (checkStateChanged(width)) {
+                uiObject.style.width = `${width.state}`;
+            }
+
+            if (checkStateChanged(height)) {
+                uiObject.style.height = `${height.state}`;
+            }
+
+            if (checkStateChanged(text)) {
+                uiObject.innerText = text.state;
+            }
         };
 
         const registerListener = () => {
@@ -181,15 +286,29 @@
             gameSystemDictionary.viewport.height = height;
 
             setInterval(() => {
+                /* 메인 로직 루프 */
+
+                //#region 게임 오브젝트 렌더링
                 const objects = getObjects();
                 for (const object of objects) {
-                    /* 메인 로직 루프 */
+                    if (object.beforeStep) {
+                        object.beforeStep();
+                    }
+
                     objectRender(object);
 
                     if (object.step) {
                         object.step();
                     }
                 }
+                //#endregion
+
+                //#region UI 오브젝트 렌더링
+                const uis = getUIs();
+                for (const ui of uis) {
+                    uiRender(ui);
+                }
+                //#endregion
 
                 //#region 뷰 시스템
                 if (gameSystemDictionary.viewport.chase) {
@@ -234,6 +353,13 @@
 
             return object;
         };
+
+        function createUI() {
+            const uiObject = getUIConstructor();
+            gameSystemDictionary.uis.push(uiObject);
+
+            return uiObject;
+        }
 
         function checkCollisionHorizonal(obj) {
             for (const object of getObjects()) {
@@ -369,6 +495,12 @@
                     createBlock(700 + i * 64, gameHeight - 256);
                 }
 
+                const posUI = createUI();
+
+                posUI.onLoad = () => {
+                    posUI.text.setState(`0,0`);
+                };
+
                 const obj1 = createObject();
 
                 // 내장변수
@@ -399,7 +531,14 @@
                     }
                 }
 
+                obj1.beforeStep = () => {
+                    posUI.text.setState(`${Math.floor(obj1.x)}, ${Math.floor(obj1.y)}`);
+                    posUI.x.setState(obj1.getViewX());
+                    posUI.y.setState(obj1.getViewY() - 30);
+                };
+
                 obj1.step = () => {
+
                     if (obj1.vals.pressed) {
                         switch (obj1.vals.pressedKey) {
                             case "ArrowLeft":
@@ -526,6 +665,9 @@
         </div>
 
         <div class="gamePlay">
+            <div class="ui">
+
+            </div>
 
         </div>
     </div>
